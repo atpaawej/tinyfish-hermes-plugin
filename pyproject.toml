@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tinyfish-hermes-plugin"
+version = "1.0.0"
+description = "TinyFish Web Search & Fetch provider for Hermes Agent"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "TinyFish" }
+]
+dependencies = [
+    "httpx>=0.24.0,<1.0.0"
+]
+
+[project.entry-points."hermes_agent.plugins"]
+tinyfish-web = "provider:register"
+
+[tool.setuptools]
+py-modules = ["provider"]

@@ -1,0 +1,23 @@
+name: tinyfish-web
+version: 1.0.0
+description: "TinyFish Web Search & Fetch provider for Hermes Agent"
+author: "TinyFish"
+kind: backend
+provides_web_providers:
+  - tinyfish
+requires_env:
+  - name: TINYFISH_API_KEY
+    description: "API key from agent.tinyfish.ai"
+    url: "https://agent.tinyfish.ai/api-keys"
+    secret: true
+python_dependencies:
+  - "httpx>=0.24.0,<1.0.0"
+config_schema:
+  default_search_limit:
+    type: int
+    default: 5
+    description: "Default maximum number of search results to return"
+  timeout_seconds:
+    type: float
+    default: 15.0
+    description: "HTTP request timeout in seconds"
