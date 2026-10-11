@@ -2,7 +2,7 @@
 
 An official backend provider plugin that connects [Hermes Agent](https://github.com/NousResearch/hermes-agent) to [TinyFish](https://tinyfish.ai).
 
-Rather than registering new, custom tool names that the LLM must learn, this plugin implements Hermes's native `WebSearchProvider` interface. It transparently services the agent's built-in `web_search` and `web_extract` tools via TinyFish's high-speed Search and Fetch APIs.
+Rather than registering separate custom tools that the LLM must learn, this plugin implements Hermes's native `WebSearchProvider` interface. It transparently services the agent's built-in `web_search` and `web_extract` tools via TinyFish's Search and Fetch APIs.
 
 ---
 
@@ -11,62 +11,80 @@ Rather than registering new, custom tool names that the LLM must learn, this plu
 - **Built-in Tool Routing:** Powers Hermes's native `web_search` and `web_extract` tools directly.
 - **Fast Search API:** Interfaces with `https://api.search.tinyfish.ai` for structured, ranked web results.
 - **Clean Markdown Extraction:** Interfaces with `https://api.fetch.tinyfish.ai` to strip boilerplate, ads, and navigation, returning token-efficient markdown.
+- **Direct GitHub Installation:** Supports 1-command install via Hermes CLI using GitHub repository shorthand.
 - **Interactive Setup:** Automatically appears as a selectable provider in `hermes setup tools` and `hermes tools`.
 - **Zero Heavy SDK Dependencies:** Built using lightweight, resilient `httpx` HTTP requests.
 
 ---
 
-## Quickstart
+## Installation
 
-### 1. Get an API Key
-Get your TinyFish API key at [agent.tinyfish.ai/api-keys](https://agent.tinyfish.ai/api-keys).
+### Method 1: Direct 1-Command Install from GitHub (Recommended)
 
-### 2. Installation
+Hermes Agent has native support for installing plugins directly from GitHub using repository shorthand:
 
-#### Option A: User Plugin Directory
-Copy or link this directory into your Hermes plugins folder:
+```bash
+hermes plugins install atpaawej/tinyfish-hermes-plugin
+```
+
+To auto-enable during installation:
+```bash
+hermes plugins install atpaawej/tinyfish-hermes-plugin --enable
+```
+
+> **Note:** Hermes also supports full Git URLs:
+> ```bash
+> hermes plugins install https://github.com/atpaawej/tinyfish-hermes-plugin
+> ```
+
+---
+
+### Method 2: Manual Directory Installation
+
+If you are developing locally or prefer a directory install:
+
 ```bash
 mkdir -p ~/.hermes/plugins/tinyfish-web
 cp -r * ~/.hermes/plugins/tinyfish-web/
-```
-
-Then enable it:
-```bash
 hermes plugins enable tinyfish-web
 ```
 
-#### Option B: Pip Install
-```bash
-pip install -e .
-```
+---
 
-### 3. Configuration
+## Setup & Configuration
 
-#### Method A: Interactive Setup (Recommended)
+### 1. Get an API Key
+Obtain your TinyFish API key at [agent.tinyfish.ai/api-keys](https://agent.tinyfish.ai/api-keys).
+
+### 2. Configure via Hermes Tools Wizard (Recommended)
 Run:
 ```bash
 hermes tools
 # or
 hermes setup tools
 ```
-Navigate to **Web Search & Extract**, select **TinyFish**, and enter your `TINYFISH_API_KEY` when prompted.
+1. Select **Web Search & Extract**.
+2. Pick **TinyFish** from the list of providers.
+3. Enter your `TINYFISH_API_KEY` when prompted. Hermes securely stores it in your credentials store.
 
-#### Method B: Manual Configuration
-Add your API key to `~/.hermes/.env`:
+### 3. Alternative: Direct CLI Configuration
+You can also set TinyFish as the active web backend directly:
 ```bash
-TINYFISH_API_KEY="your_tinyfish_api_key_here"
+hermes config set web.backend tinyfish
 ```
 
-Set TinyFish as your active web backend in `~/.hermes/config.yaml`:
-```yaml
-web:
-  backend: "tinyfish"
+---
+
+## Updating & Uninstalling
+
+### Update to the latest version
+```bash
+hermes plugins update tinyfish-web
 ```
-Or configure search and extract separately:
-```yaml
-web:
-  search_backend: "tinyfish"
-  extract_backend: "tinyfish"
+
+### Remove the plugin
+```bash
+hermes plugins remove tinyfish-web
 ```
 
 ---

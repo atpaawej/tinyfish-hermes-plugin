@@ -78,9 +78,10 @@ class TinyFishWebSearchProvider(WebSearchProvider):
         api_key = os.getenv("TINYFISH_API_KEY", "").strip()
         if not api_key:
             raise ValueError(
-                "TINYFISH_API_KEY is not set. Please set it in ~/.hermes/.env or your environment."
+                "TINYFISH_API_KEY is not set. Please configure it via `hermes tools` or your environment."
             )
         return api_key
+
 
     def search(self, query: str, limit: int = 5) -> Dict[str, Any]:
         """Perform web search via TinyFish Search API and return Hermes response envelope."""
